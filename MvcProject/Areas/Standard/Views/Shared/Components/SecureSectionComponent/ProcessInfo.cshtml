@@ -1,0 +1,25 @@
+﻿@*
+	For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@using System.Diagnostics;
+@using System.Runtime.InteropServices;
+@{
+	Stopwatch watch = Stopwatch.StartNew();
+}
+<table>
+	<tr>
+		<td>@Process.GetCurrentProcess().BasePriority</td>
+		<td>@Process.GetCurrentProcess().ProcessName</td>
+		<td>@Process.GetCurrentProcess().MachineName</td>
+		<td>@Process.GetCurrentProcess().Id</td>
+		<td>@watch.ElapsedMilliseconds</td>
+	</tr>
+	<tr>
+		<td>@Process.GetCurrentProcess().VirtualMemorySize64</td>
+		<td>@Process.GetCurrentProcess().WorkingSet64</td>
+		<td>@Process.GetCurrentProcess().Responding</td>
+		<td>@Process.GetCurrentProcess().Threads.Count</td>
+		<td>@Process.GetCurrentProcess().TotalProcessorTime</td>
+		<td>@Process.GetCurrentProcess().UserProcessorTime</td>
+	</tr>
+</table>

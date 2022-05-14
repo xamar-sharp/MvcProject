@@ -6,6 +6,7 @@
 }
 @model User
 @inject WebContext ctx
+@using MvcProject.Components
 @inject IViewLocalizer local
 @if(Model is not null){
 <label>@local["greeting"] ,@Model.Email</label>
@@ -17,5 +18,5 @@
     }
 }
 @section Secure{
-    <p>@System.Diagnostics.Process.GetCurrentProcess().WorkingSet64 bytes</p>
+    @(await Component.InvokeAsync<SecureSectionComponent>(new {viewName="ProcessInfo"}))
 }}
