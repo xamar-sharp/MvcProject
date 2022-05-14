@@ -1,0 +1,25 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = local["Title"];
+}
+@inject IViewLocalizer local
+@model AuthorizationViewModel
+<div asp-validation-summary="ModelOnly"></div>
+<label>@local["fillForm"]</label>
+<form asp-antiforgery="true" method="post">
+    <div>
+        @Html.LabelFor(model=>model.Email)
+        @Html.EditorFor(model=>model.Email)
+        <span asp-validation-for="Email"></span>
+    </div>
+    <div>
+        @Html.LabelFor(model=>model.Password)
+        @Html.EditorFor(model=>model.Password)
+        <span asp-validation-for="Password"></span>
+    </div>
+    <button type="submit">
+        @local["submit"];
+    </button>
+</form>
