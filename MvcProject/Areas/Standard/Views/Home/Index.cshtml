@@ -17,6 +17,7 @@
         <image src="data:image/jpeg;base64,@Convert.ToBase64String(System.IO.File.ReadAllBytes(reference.AbsolutePath))"/>
     }
 }
+@Html.GetAnchorList(new KeyValuePair<string,string>[]{new KeyValuePair<string, string>("https://www.mirosoft.com/","Microsoft site")},"References",true)
 @section Secure{
     @(await Component.InvokeAsync<SecureSectionComponent>(new {viewName="ProcessInfo"}))
 }}

@@ -17,6 +17,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 namespace MvcProject
@@ -33,7 +35,14 @@ namespace MvcProject
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews().AddViewLocalization().AddDataAnnotationsLocalization();
+            services.AddControllersWithViews(opt =>
+            {
+                opt.ModelBinderProviders.Insert(1, new ModelBinderProvider());
+            }).AddViewLocalization().AddDataAnnotationsLocalization();
+            services.Configure<MvcViewOptions>(opt =>
+            {
+                opt.ViewEngines.Insert(0, new HtmlViewEngine());
+            });
             services.AddResponseCompression(opt =>
             {
                 opt.EnableForHttps = true;
@@ -109,7 +118,21 @@ namespace MvcProject
                 FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(Environment.CurrentDirectory),
                 RequestPath = new Microsoft.AspNetCore.Http.PathString("/secure/data")
             });
-            //app.UseStatusCodePagesWithReExecute("/secure/error", "?state={0}");
+            app.UseStatusCodePagesWithReExecute("/secure/error", "?state={0}");
+            app.UseRequestLocalization(new RequestLocalizationOptions()
+            {
+                SupportedCultures = new CultureInfo[]
+                {
+                    new CultureInfo("en-US"),
+                    new CultureInfo("ru-RU")
+                },
+                SupportedUICultures = new CultureInfo[]
+                {
+                    new CultureInfo("en-US"),
+                    new CultureInfo("ru-RU")
+                },
+                DefaultRequestCulture = new RequestCulture("en-US")
+            });
             app.UseResponseCompression();
             app.UseMiddleware<TrafficMiddleware>();
             app.UseRouting();
