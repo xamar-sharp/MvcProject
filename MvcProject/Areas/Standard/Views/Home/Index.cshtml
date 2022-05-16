@@ -19,5 +19,5 @@
 }
 @Html.GetAnchorList(new KeyValuePair<string,string>[]{new KeyValuePair<string, string>("https://www.mirosoft.com/","Microsoft site")},"References",true)
 @section Secure{
-    @(await Component.InvokeAsync<SecureSectionComponent>(new {viewName="ProcessInfo"}))
+    @(await Component.InvokeAsync<SecureSectionComponent>(new {viewName="GetConfiguration"}))
 }}

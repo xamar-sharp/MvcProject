@@ -21,13 +21,14 @@ using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 namespace MvcProject
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup()
         {
-            Configuration = configuration;
+            Configuration = new ConfigurationBuilder().SetBasePath(Environment.CurrentDirectory).Add(new JsonConfigurationSource("configuration")).Build();
         }
 
         public IConfiguration Configuration { get; }
@@ -37,7 +38,7 @@ namespace MvcProject
         {
             services.AddControllersWithViews(opt =>
             {
-                opt.ModelBinderProviders.Insert(1, new ModelBinderProvider());
+                //opt.ModelBinderProviders.Insert(1, new ModelBinderProvider());
             }).AddViewLocalization().AddDataAnnotationsLocalization();
             services.Configure<MvcViewOptions>(opt =>
             {
@@ -50,7 +51,7 @@ namespace MvcProject
             });
             services.AddSession(opt =>
             {
-                opt.IdleTimeout = TimeSpan.FromMinutes(3);
+                opt.IdleTimeout = TimeSpan.FromMinutes(10);
                 opt.Cookie.Name = ".AspNetCore.Session";
                 opt.Cookie.IsEssential = true;
                 opt.Cookie.HttpOnly = false;
@@ -65,7 +66,7 @@ namespace MvcProject
                 opt.LoginPath = new PathString("/Authorization/Login");
                 opt.AccessDeniedPath = new PathString("/Authorization/Login");
             });
-            services.AddSingleton<IAuthorizationHandler, SpaceAuthorizationHandler>();
+            //services.AddSingleton<IAuthorizationHandler,SpaceAuthorizationHandler>();
             ILogger _logger = LoggerFactory.Create(builder =>
             {
                 builder.AddProvider(new LoggerProvider("C:\\log.json"));
@@ -92,6 +93,7 @@ namespace MvcProject
             {
                 opt.RedirectStatusCode = 301;
             });
+            services.Configure<ConfigurationObject>(Configuration);
             services.Configure<RouteOptions>(opt => opt.ConstraintMap.Add("secret", typeof(CookieRouteConstraint)));
         }
 
@@ -134,7 +136,7 @@ namespace MvcProject
                 DefaultRequestCulture = new RequestCulture("en-US")
             });
             app.UseResponseCompression();
-            app.UseMiddleware<TrafficMiddleware>();
+            //app.UseMiddleware<TrafficMiddleware>();
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();

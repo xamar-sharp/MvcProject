@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 using System.IO;
 namespace MvcProject.Areas.Standard.Controllers
 {
-    [Authorize(Roles = "USER, ADMIN",Policy ="default")]
+    [Authorize(Roles = "USER, ADMIN")]
     [Area("Standard")]
     public class HomeController : Controller
     {

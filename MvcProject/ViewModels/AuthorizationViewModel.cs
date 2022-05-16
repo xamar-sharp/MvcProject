@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Collections.Generic;
 namespace MvcProject.ViewModels
 {
-    public class AuthorizationViewModel:IValidatableObject
+    public class AuthorizationViewModel
     {
         [Required(ErrorMessage ="Email_Required")]
         [EmailAddress(ErrorMessage ="Email_Structure")]
@@ -17,14 +17,6 @@ namespace MvcProject.ViewModels
         [DataType(DataType.Password)]
         [Display(Name ="Password_Display")]
         public string Password { get; set; }
-        public IEnumerable<ValidationResult> Validate(ValidationContext ctx)
-        {
-            List<ValidationResult> errors = new List<ValidationResult>(1);
-            if(Password=="SELECT * FROM xxx")
-            {
-                errors.Add(new ValidationResult("Are you learn a sql injection?"));
-            }
-            return errors;
-        }
+        
     }
 }
